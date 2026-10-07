@@ -1,7 +1,7 @@
 {
   "name": "defivaultpro",
   "version": "1.0.0",
-  "description": "DeFiVaultPro - Node.js REST API",
+  "description": "DeFiVaultPro HTTP starter service with health, data, and JSON transformation endpoints",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

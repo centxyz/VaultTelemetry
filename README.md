@@ -1,44 +1,30 @@
-<!-- fallback_DeFiVaultPro_20260901092245_67785 -->
-
 # DeFiVaultPro
 
-DeFiVaultPro is an advanced, Automated Decentralized Asset Manager that multi-protocol support via a secure gateway to blockchain networks.
+DeFiVaultPro is a small Express HTTP starter service. It provides a health check, returns an in-memory empty data collection, and transforms posted JSON by adding processing metadata. It does not implement a blockchain, message queue, distributed network, or persistent database.
 
-The key benefits of using DeFiVaultPro include:
+## Install and run
 
-- DeFiVaultPro is an advanced, Automated
-- Decentralized Asset Manager that multi-protocol
-- support via a secure gateway
+```bash
+git clone https://github.com/centxyz/DeFiVaultPro.git
+cd DeFiVaultPro
+npm install
+npm start
+```
 
-## Key Features
+The default port is `3000`; set `PORT` to override it.
 
-- DeFiVaultPro is an advanced, Automated
-- Decentralized Asset Manager that multi-protocol
-- support via a secure gateway
+## Endpoints
 
-## Technology Stack
+- `GET /health` — service health
+- `GET /api/data` — current in-memory data response
+- `POST /api/process` — echoes and marks a JSON object as processed
 
-- python
-- python framework (Flask/Django/FastAPI or equivalent)
-- Pytest for testing
+## Test
 
-## Installation
-
-1. Clone the repository: `git clone https://github.com/centxyz/DeFiVaultPro.git`
-2. `cd DeFiVaultPro`
-3. Install in editable mode: `pip install -e .`
-
-## Configuration
-
-DeFiVaultPro is configured through environment variables (see `.env.example`). Key options:
-- **APP_ENV**: `development` or `production`.
-- **PORT**: Port the server listens on.
-- **LOG_LEVEL**: `debug`, `info`, or `error`.
-
-## Contributing
-
-Contributions are welcome and appreciated. Please submit pull requests and issues through the GitHub interface.
+```bash
+npm test
+```
 
 ## License
 
-Released under the MIT License — see the [LICENSE](https://github.com/centxyz/DeFiVaultPro/blob/main/LICENSE) file.
+MIT
