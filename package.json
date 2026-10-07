@@ -2,6 +2,6 @@
   "name":"defivaultpro","version":"2.0.0","description":"Read-only ERC-4626 vault analytics API","main":"src/server.js",
   "scripts":{"start":"node src/server.js","test":"node --test tests/*.test.js"},
   "keywords":["erc-4626","defi","vault","ethereum","api"],"author":"cent","license":"MIT",
-  "dependencies":{"cors":"^2.8.5","ethers":"^6.15.0","express":"^4.21.2","morgan":"^1.10.0"},
+  "dependencies":{"cors":"^2.8.5","ethers":"^6.15.0","express":"^5.2.1","morgan":"^1.10.0"},
   "devDependencies":{"supertest":"^7.1.4"}
 }
