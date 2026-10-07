@@ -41,3 +41,9 @@ Tests execute ABI-encoded mock RPC calls, decoding and unit formatting, caching,
 ## License
 
 MIT © cent
+
+## Current limitations
+
+- Analytics are read-only snapshots from the configured RPC endpoint and may change before a transaction executes.
+- Vault behavior can extend beyond the ERC-4626 interface and requires independent contract review.
+- The API does not sign transactions, move assets, or provide investment advice.
