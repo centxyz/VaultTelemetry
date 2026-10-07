@@ -1,5 +1,7 @@
 # DeFiVaultPro
 
+[![CI](https://github.com/centxyz/DeFiVaultPro/actions/workflows/ci.yml/badge.svg)](https://github.com/centxyz/DeFiVaultPro/actions/workflows/ci.yml)
+
 DeFiVaultPro is a read-only ERC-4626 vault analytics API. It queries configured EVM JSON-RPC endpoints for vault and underlying-asset state, calculates a share price, exposes deposit/withdrawal previews and account limits, and returns normalized JSON for dashboards or monitoring systems.
 
 It never accepts private keys, signs transactions, or moves assets.
