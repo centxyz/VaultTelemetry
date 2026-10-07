@@ -1,16 +1,16 @@
-# DeFiVaultPro
+# VaultTelemetry
 
-[![CI](https://github.com/centxyz/DeFiVaultPro/actions/workflows/ci.yml/badge.svg)](https://github.com/centxyz/DeFiVaultPro/actions/workflows/ci.yml)
+[![CI](https://github.com/centxyz/VaultTelemetry/actions/workflows/ci.yml/badge.svg)](https://github.com/centxyz/VaultTelemetry/actions/workflows/ci.yml)
 
-DeFiVaultPro is a read-only ERC-4626 vault analytics API. It queries configured EVM JSON-RPC endpoints for vault and underlying-asset state, calculates a share price, exposes deposit/withdrawal previews and account limits, and returns normalized JSON for dashboards or monitoring systems.
+VaultTelemetry is a read-only ERC-4626 vault analytics API. It queries configured EVM JSON-RPC endpoints for vault and underlying-asset state, calculates a share price, exposes deposit/withdrawal previews and account limits, and returns normalized JSON for dashboards or monitoring systems.
 
 It never accepts private keys, signs transactions, or moves assets.
 
 ## Configure and run
 
 ```bash
-git clone https://github.com/centxyz/DeFiVaultPro.git
-cd DeFiVaultPro
+git clone https://github.com/centxyz/VaultTelemetry.git
+cd VaultTelemetry
 npm install
 
 export RPC_URLS='{"ethereum":"https://your-ethereum-rpc.example","base":"https://your-base-rpc.example"}'
