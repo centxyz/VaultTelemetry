@@ -1,67 +1,29 @@
-// src/server.js
-/**
- * Express server for DeFiVaultPro
- */
+const express = require('express'); const cors = require('cors'); const morgan = require('morgan');
+const { DeFiVaultProService, VaultError } = require('./services/defivaultpro-service');
 
-const express = require('express');
-const { DeFiVaultProService } = require('./services/defivaultpro-service');
-const morgan = require('morgan');
-const cors = require('cors');
+function parseRpcUrls(value) {
+  if (!value) return {};
+  let parsed; try { parsed = JSON.parse(value); } catch { throw new Error('RPC_URLS must be valid JSON'); }
+  for (const [chain, url] of Object.entries(parsed)) if (!chain || typeof url !== 'string' || !/^https?:\/\//.test(url)) throw new Error('RPC_URLS values must be HTTP(S) URLs');
+  return parsed;
+}
 
 class Server {
-    constructor(port = 3000) {
-        this.port = port;
-        this.app = express();
-        this.service = new DeFiVaultProService();
-        this.setupMiddleware();
-        this.setupRoutes();
-    }
-
-    setupMiddleware() {
-        this.app.use(cors());
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(morgan('dev'));
-    }
-
-    setupRoutes() {
-        this.app.get('/health', (req, res) => {
-            res.json({ status: 'healthy', service: 'DeFiVaultPro' });
-        });
-
-        this.app.get('/api/data', async (req, res) => {
-            try {
-                const data = await this.service.getData();
-                res.json({ success: true, data });
-            } catch (error) {
-                res.status(500).json({ success: false, error: error.message });
-            }
-        });
-
-        this.app.post('/api/process', async (req, res) => {
-            try {
-                const result = await this.service.process(req.body);
-                res.json({ success: true, result });
-            } catch (error) {
-                res.status(500).json({ success: false, error: error.message });
-            }
-        });
-
-        this.app.use((req, res) => {
-            res.status(404).json({ error: 'Route not found' });
-        });
-    }
-
-    start() {
-        this.app.listen(this.port, () => {
-            console.log(`🚀 DeFiVaultPro server running on port ${this.port}`);
-        });
-    }
+  constructor({ port = 3000, service, corsOrigin = false } = {}) {
+    this.port = Number(port); this.service = service || new DeFiVaultProService({ rpcUrls: parseRpcUrls(process.env.RPC_URLS) }); this.app = express();
+    this.app.disable('x-powered-by'); this.app.use(cors({ origin: corsOrigin || false })); this.app.use(express.json({ limit: '16kb' })); this.app.use(morgan('combined'));
+    this.routes();
+  }
+  routes() {
+    this.app.get('/health', (_req, res) => res.json({ status: 'healthy', service: 'DeFiVaultPro', chains: this.service.listChains() }));
+    this.app.get('/api/v1/chains', (_req, res) => res.json({ chains: this.service.listChains() }));
+    this.app.get('/api/v1/vaults/:chain/:address', async (req, res, next) => {
+      try { res.json(await this.service.inspect(req.params.chain, req.params.address, { account: req.query.account, amount: req.query.amount })); } catch (error) { next(error); }
+    });
+    this.app.use((_req, res) => res.status(404).json({ error: 'Route not found', code: 'NOT_FOUND' }));
+    this.app.use((error, _req, res, _next) => { const status = error instanceof VaultError ? error.status : 500; res.status(status).json({ error: error.message, code: error.code || 'INTERNAL' }); });
+  }
+  start() { this.httpServer = this.app.listen(this.port, () => console.log(`DeFiVaultPro listening on ${this.port}`)); return this.httpServer; }
 }
-
-if (require.main === module) {
-    const server = new Server(process.env.PORT || 3000);
-    server.start();
-}
-
-module.exports = { Server };
+if (require.main === module) new Server({ port: process.env.PORT || 3000, corsOrigin: process.env.CORS_ORIGIN || false }).start();
+module.exports = { Server, parseRpcUrls };
